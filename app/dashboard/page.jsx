@@ -1,12 +1,17 @@
 'use client';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from "@/app/components/dasboardNavbar";
+import ReceiverForm from '@/app/dashboard/components/ReceiverForm';
+import ReceiverList from '@/app/dashboard/components/ReceiverList';
+import ScheduleCallForm from '@/app/dashboard/components/ScheduleCallForm';
+import ScheduledCallList from '@/app/dashboard/components/ScheduledCallList';
 
 export default function Dashboard() {
   const { user } = useAuth();
   const router = useRouter();
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -27,6 +32,10 @@ export default function Dashboard() {
       }}>
         <h2 style={{ marginBottom: '1rem' }}>Welcome, {user?.email}</h2>
         <p>This is your dashboard. Here you can trigger voice calls, review your mood logs, and manage caregiver alerts.</p>
+        <ReceiverForm onAdded={() => setRefresh(!refresh)} />
+      <ReceiverList refresh={refresh} />
+      <ScheduleCallForm onScheduled={() => setRefresh(!refresh)} />
+        <ScheduledCallList refresh={refresh} />
       </div>
     </>
   );
