@@ -28,6 +28,17 @@ export default function AuthPage() {
       const { error } = await supabase.auth.signUp({ email, password });
       if (error) setMessage(error.message);
       else {
+        const user = (await supabase.auth.getUser()).data.user;
+        if (user) {
+          await supabase.from('user_profiles').insert([
+            {
+              id: user.id,
+              email: user.email,
+              caregiver_phone: ''
+            }
+          ]);
+        }
+
         setMessage('Signup successful! Redirecting...');
         setTimeout(() => {
           router.push('/dashboard');

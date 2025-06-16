@@ -7,6 +7,7 @@ import ReceiverForm from '@/app/dashboard/components/ReceiverForm';
 import ReceiverList from '@/app/dashboard/components/ReceiverList';
 import ScheduleCallForm from '@/app/dashboard/components/ScheduleCallForm';
 import ScheduledCallList from '@/app/dashboard/components/ScheduledCallList';
+import MoodCalendar from '@/app/dashboard/components/MoodCalendar';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -19,23 +20,34 @@ export default function Dashboard() {
     }
   }, [user]);
 
+  const name = user?.name || user?.email.split("@")[0] || "";
+
   return (
     <>
       <Navbar />
-      <div style={{
-        padding: '2rem',
-        maxWidth: '800px',
-        margin: '2rem auto',
-        backgroundColor: '#f9f9f9',
-        borderRadius: '8px',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)'
-      }}>
-        <h2 style={{ marginBottom: '1rem' }}>Welcome, {user?.email}</h2>
-        <p>This is your dashboard. Here you can trigger voice calls, review your mood logs, and manage caregiver alerts.</p>
-        <ReceiverForm onAdded={() => setRefresh(!refresh)} />
-      <ReceiverList refresh={refresh} />
-      <ScheduleCallForm onScheduled={() => setRefresh(!refresh)} />
-        <ScheduledCallList refresh={refresh} />
+      <div className='mx-12'>
+        <h2 className="text-xl font-medium text-left mt-6">Welcome, {name}</h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mt-6 px-4 py-6">
+        <div className="order-1">
+          <ReceiverForm onAdded={() => setRefresh(!refresh)} />
+        </div>
+
+        <div className="order-2">
+          <ReceiverList refresh={refresh} />
+        </div>
+
+        <div className="order-3">
+          <ScheduleCallForm onScheduled={() => setRefresh(!refresh)} />
+        </div>
+
+        <div className="md:col-span-3 order-4">
+          <ScheduledCallList refresh={refresh} />
+        </div>
+
+        <div className="md:col-span-3 order-5">
+          <MoodCalendar />
+        </div>
       </div>
     </>
   );

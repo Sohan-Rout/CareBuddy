@@ -19,7 +19,7 @@ export default function ReceiverForm({ onAdded }) {
     const { error } = await supabase.from('care_receivers').insert([{
       user_id: user.id,
       name: form.name,
-      phone: form.phone,
+      phone: form.phone.replace(/\s+/g, ''),
       relationship: form.relationship
     }]);
 
@@ -33,13 +33,54 @@ export default function ReceiverForm({ onAdded }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: '2rem' }}>
-      <h3>Add Someone You Care About</h3>
-      <input name="name" placeholder="Name" value={form.name} onChange={handleChange} required /><br />
-      <input name="phone" placeholder="Phone (+91...)" value={form.phone} onChange={handleChange} required /><br />
-      <input name="relationship" placeholder="Relationship" value={form.relationship} onChange={handleChange} /><br />
-      <button type="submit">Add Receiver</button>
-      <p>{message}</p>
+    <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-6 space-y-4">
+      <h3 className="text-xl text-center font-medium mb-4">Add Someone You Care About</h3>
+
+      <div>
+        <label className="block mb-1 font-medium">Name:</label>
+        <input
+          name="name"
+          placeholder="Enter the Name of the person"
+          value={form.name}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 rounded-xl bg-gray-100 placeholder-gray-400 shadow-inner focus:outline-none"
+        />
+      </div>
+
+      <div>
+        <label className="block mb-1 font-medium">Phone Number:</label>
+        <input
+          name="phone"
+          placeholder="Enter the phone number"
+          value={form.phone}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 rounded-xl bg-gray-100 placeholder-gray-400 shadow-inner focus:outline-none"
+        />
+      </div>
+
+      <div>
+        <label className="block mb-1 font-medium">Relationship:</label>
+        <input
+          name="relationship"
+          placeholder="Your relationship with the person"
+          value={form.relationship}
+          onChange={handleChange}
+          className="w-full px-4 py-2 rounded-xl bg-gray-100 placeholder-gray-400 shadow-inner focus:outline-none"
+        />
+      </div>
+
+      <div className='flex justify-center'>
+      <button
+        type="submit"
+        className="w-auto bg-primary text-black font-medium py-2 px-3 rounded-xl shadow-lg border border-black hover:shadow-lg transition duration-200"
+      >
+        Add Receiver
+      </button>
+      </div>
+
+      {message && <p className="text-sm text-center text-gray-600">{message}</p>}
     </form>
   );
 }
