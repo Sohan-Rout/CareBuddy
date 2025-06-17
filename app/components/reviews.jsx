@@ -29,7 +29,7 @@ const reviews = [
   {
     name: "Kabir Singh",
     username: "@kabir_s",
-    feedback: "Sometimes it lags a little, but overall it’s a solid app for mental well-being.",
+    feedback: "Sometimes it lags a little, but overall it's a solid app for mental well-being.",
     stars: "3.9",
   },
   {
@@ -47,7 +47,7 @@ const reviews = [
   {
     name: "Isha Malhotra",
     username: "@isha_mentalpeace",
-    feedback: "Not just a mental health app – it feels like a quiet companion. Love the design too!",
+    feedback: "Not just a mental health app it feels like a quiet companion. Love the design too!",
     stars: "4.6",
   },
   {

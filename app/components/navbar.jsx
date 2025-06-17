@@ -48,26 +48,35 @@ const Navbar = () => {
         </button>
 
         {/* Navigation Links */}
-        <ul
-          className={`flex-col md:flex md:flex-row gap-6 text-lg font-semibold text-gray-700 absolute md:static top-full left-0 w-full md:w-auto bg-white md:bg-transparent px-6 md:px-0 py-4 md:py-0 transition-all duration-300 ease-in ${
-            isOpen ? 'flex' : 'hidden'
-          }`}
-        >
-          {navlinks.map((item, index) => (
-            <li key={index}>
+        <div className="absolute md:static inset-x-0 md:flex md:justify-center mx-auto">
+          <ul
+            className={`flex-col md:flex md:flex-row md:justify-center gap-6 text-lg font-semibold text-gray-700 absolute md:static top-full left-0 w-full md:w-auto bg-white md:bg-transparent px-6 md:px-0 py-4 md:py-0 transition-all duration-300 ease-in ${
+              isOpen ? 'flex' : 'hidden'
+            }`}
+          >
+            {navlinks.map((item, index) => (
+              <li key={index}>
+                <a
+                  href={item.navs}
+                  className="block py-2 md:py-0 hover:text-secondary transition"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.name}
+                </a>
+              </li>
+            ))}
+            <li className="md:hidden">
               <a
-                href={item.navs}
-                className="block py-2 md:py-0 hover:text-secondary transition"
+                href="/auth"
+                className="block px-6 py-1 text-lg border border-gray-800 rounded-full text-black font-[550] bg-primary hover:opacity-90 transition shadow-[0_4px_12px_rgba(0,0,0,0.2)] text-center"
                 onClick={() => setIsOpen(false)}
               >
-                {item.name}
+                Login / Signup
               </a>
             </li>
-          ))}
-        </ul>
-
-        {/* Auth Buttons */}
-        <div className="hidden md:flex items-center gap-4">
+          </ul>
+        </div>
+        <div className="hidden md:flex items-center">
           <a
             href="/auth"
             className="px-6 py-1 text-lg border border-gray-800 rounded-full text-black font-[550] bg-primary hover:opacity-90 transition shadow-[0_4px_12px_rgba(0,0,0,0.2)]"
