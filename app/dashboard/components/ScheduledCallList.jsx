@@ -36,7 +36,7 @@ export default function ScheduledCallList({ refresh }) {
         <div className="space-y-2">
           <div className="grid grid-cols-5 gap-4 font-semibold text-sm border p-2 rounded-lg">
             <div>Date</div>
-            <div className="col-span-1">Name, Relationship</div>
+            <div className="col-span-1">Name</div>
             <div>Number</div>
             <div>Time</div>
             <div>Status</div>

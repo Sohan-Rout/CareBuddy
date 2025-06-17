@@ -64,66 +64,68 @@ const Reviews = () => {
 
 
   return (
-    <section className="py-16 px-4 bg-white text-black font-poppin relative overflow-hidden">
-      {/* Logo in bottom-left with deeper overlap and blend */}
-      <div className="absolute -bottom-32 left-0 z-5 hidden md:block">
-        <img
-          src="/logo.png"
-          alt="CareBuddy Logo"
-          className="w-80 h-auto opacity-90 mix-blend-multiply pointer-events-none"
-        />
-      </div>
+    <section className="py-16 px-4 bg-white flex justify-center items-center text-black font-poppin relative overflow-hidden max-w-6xl mx-auto">
+      <main className="justify-center w-full">
+        {/* Logo in bottom-left with deeper overlap and blend */}
+        <div className="absolute -bottom-32 left-0 z-5 hidden md:block">
+          <img
+            src="/logo.png"
+            alt="CareBuddy Logo"
+            className="w-80 h-auto opacity-90 mix-blend-multiply pointer-events-none"
+          />
+        </div>
 
-      {/* Header */}
-      <div className="max-w-6xl font-poppins mx-auto text-center mb-10 relative z-20">
-        <h2 className="text-3xl font-semibold mb-2">Reviews</h2>
-        <p className="text-gray-600 ">What Users Think About us</p>
-      </div>
+        {/* Header */}
+        <div className="max-w-6xl font-poppins mx-auto text-center mb-10 relative z-20">
+          <h2 className="text-3xl font-poppins font-medium mb-2">Reviews</h2>
+          <p className="text-gray-600 text-lg">What Users Think About us</p>
+        </div>
 
-      <div className="relative z-1">
-        <div className="relative">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-5xl mb-14 mx-auto">
-            {reviews.slice(0, visibleCount).map((item, index) => (
-              <div
-                key={index}
-                className="border bg-white border-black/15 p-5 shadow-xl rounded-xl cursor-pointer transition-all duration-300"
-                onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
-              >
-                <div className="flex flex-row gap-2">
-                  <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-                    <span className="text-center mx-auto">{item.name.charAt(0).toUpperCase()}</span>
+        <div className="relative z-1 flex justify-center">
+          <div className="relative">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-5xl mb-14 mx-auto">
+              {reviews.slice(0, visibleCount).map((item, index) => (
+                <div
+                  key={index}
+                  className="border bg-white border-black/15 p-5 shadow-xl rounded-xl cursor-pointer transition-all duration-300"
+                  onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
+                >
+                  <div className="flex flex-row gap-2">
+                    <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                      <span className="text-center mx-auto">{item.name.charAt(0).toUpperCase()}</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="">{item.name}</span>
+                      <span className="text-secondary">{item.username}</span>
+                    </div>
                   </div>
-                  <div className="flex flex-col">
-                    <span className="">{item.name}</span>
-                    <span className="text-secondary">{item.username}</span>
+                  <div className="h-[1px] w-full mt-2 mb-2 bg-gradient-to-r from-gray-300 via-gray-400 to-gray-300"></div>
+                  <div className="text-gray-600">
+                    <p>
+                      {(typeof window !== "undefined" && window.innerWidth < 768
+                        ? expandedIndex === index
+                        : visibleCount === 3 || expandedIndex === index)
+                        ? item.feedback
+                        : `${item.feedback.slice(0, 80)}...`}
+                    </p>
+                  </div>
+                  <div className="h-[1px] w-full mt-2 mb-2 bg-gradient-to-r from-gray-300 via-gray-400 to-gray-300"></div>
+                  <div>
+                    {true && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setExpandedIndex(expandedIndex === index ? null : index);
+                        }}
+                        className="text-sm text-secondary"
+                      >
+                        {expandedIndex === index ? "Show less" : "Show more"}
+                      </button>
+                    )}
                   </div>
                 </div>
-                <div className="h-[1px] w-full mt-2 mb-2 bg-gradient-to-r from-gray-300 via-gray-400 to-gray-300"></div>
-                <div className="text-gray-600">
-                  <p>
-                    {(typeof window !== "undefined" && window.innerWidth < 768
-                      ? expandedIndex === index
-                      : visibleCount === 3 || expandedIndex === index)
-                      ? item.feedback
-                      : `${item.feedback.slice(0, 80)}...`}
-                  </p>
-                </div>
-                <div className="h-[1px] w-full mt-2 mb-2 bg-gradient-to-r from-gray-300 via-gray-400 to-gray-300"></div>
-                <div>
-                  {true && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setExpandedIndex(expandedIndex === index ? null : index);
-                      }}
-                      className="text-sm text-secondary"
-                    >
-                      {expandedIndex === index ? "Show less" : "Show more"}
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
@@ -139,7 +141,7 @@ const Reviews = () => {
             {visibleCount === reviews.length ? "Show Less" : "Load More"}
           </button>
         </div>
-      </div>
+      </main>
     </section>
   );
 };
