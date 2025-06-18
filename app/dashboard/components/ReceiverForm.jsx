@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 export default function ReceiverForm({ onAdded }) {
   const { user } = useAuth();
   const [form, setForm] = useState({ name: '', phone: '', relationship: '' });
+  const [countryCode, setCountryCode] = useState('+91');
   const [message, setMessage] = useState('');
 
   const handleChange = (e) => {
@@ -19,7 +20,7 @@ export default function ReceiverForm({ onAdded }) {
     const { error } = await supabase.from('care_receivers').insert([{
       user_id: user.id,
       name: form.name,
-      phone: form.phone.replace(/\s+/g, ''),
+      phone: (countryCode + form.phone.replace(/\s+/g, '')),
       relationship: form.relationship
     }]);
 
@@ -50,14 +51,26 @@ export default function ReceiverForm({ onAdded }) {
 
       <div>
         <label className="block mb-1 font-medium">Phone Number:</label>
-        <input
-          name="phone"
-          placeholder="Enter the phone number"
-          value={form.phone}
-          onChange={handleChange}
-          required
-          className="w-full px-4 py-2 rounded-xl bg-gray-100 placeholder-gray-400 shadow-inner focus:outline-none"
-        />
+        <div className="flex gap-2">
+          <select
+            value={countryCode}
+            onChange={(e) => setCountryCode(e.target.value)}
+            className="px-3 py-2 rounded-xl bg-gray-100 shadow-inner focus:outline-none border border-gray-300"
+          >
+            <option value="+91">+91 (India)</option>
+            <option value="+1">+1 (USA)</option>
+            <option value="+44">+44 (UK)</option>
+            {/* Add more country codes as needed */}
+          </select>
+          <input
+            name="phone"
+            placeholder="Enter the phone number"
+            value={form.phone}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 rounded-xl bg-gray-100 placeholder-gray-400 shadow-inner focus:outline-none"
+          />
+        </div>
       </div>
 
       <div>

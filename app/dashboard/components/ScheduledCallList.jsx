@@ -7,6 +7,11 @@ export default function ScheduledCallList({ refresh }) {
   const { user } = useAuth();
   const [calls, setCalls] = useState([]);
 
+  const handleDelete = async (id) => {
+    await supabase.from('scheduled_calls').delete().eq('id', id);
+    setCalls(calls.filter(call => call.id !== id));
+  };
+
   useEffect(() => {
     if (user) {
       supabase
@@ -34,12 +39,13 @@ export default function ScheduledCallList({ refresh }) {
         <p className="text-gray-500 text-center">No calls scheduled yet.</p>
       ) : (
         <div className="space-y-2">
-          <div className="grid grid-cols-5 gap-4 font-semibold text-sm border p-2 rounded-lg">
+          <div className="grid grid-cols-6 gap-4 font-semibold text-sm border p-2 rounded-lg">
             <div>Date</div>
             <div className="col-span-1">Name</div>
             <div>Number</div>
             <div>Time</div>
             <div>Status</div>
+            <div>Actions</div>
           </div>
 
           {calls.map(call => {
@@ -48,12 +54,15 @@ export default function ScheduledCallList({ refresh }) {
             const time = datetime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
             return (
-              <div key={call.id} className="grid grid-cols-5 gap-4 text-sm border p-2 rounded-lg">
+              <div key={call.id} className="grid grid-cols-6 gap-4 text-sm border p-2 rounded-lg">
                 <div>{date}</div>
                 <div className="col-span-1">{call.care_receivers?.name || 'Unknown'}</div>
                 <div>{call.care_receivers?.phone || '-'}</div>
                 <div>{time}</div>
                 <div className="font-medium">{call.status}</div>
+                <div className="flex gap-2">
+                  <button onClick={() => handleDelete(call.id)} className="text-red-500 hover:underline">Delete</button>
+                </div>
               </div>
             );
           })}

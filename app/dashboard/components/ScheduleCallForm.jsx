@@ -9,6 +9,7 @@ export default function ScheduleCallForm({ onScheduled }) {
   const [receiverId, setReceiverId] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
+  const [repeatDays, setRepeatDays] = useState(1);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -30,13 +31,18 @@ export default function ScheduleCallForm({ onScheduled }) {
 
     const scheduledDateTime = new Date(`${date}T${time}`);
 
-    const { error } = await supabase.from('scheduled_calls').insert([
-      {
+    const calls = [];
+    for (let i = 0; i < repeatDays; i++) {
+      const scheduledDate = new Date(scheduledDateTime);
+      scheduledDate.setDate(scheduledDate.getDate() + i);
+      calls.push({
         user_id: user.id,
         receiver_id: receiverId,
-        scheduled_time: scheduledDateTime.toISOString()
-      }
-    ]);
+        scheduled_time: scheduledDate.toISOString()
+      });
+    }
+
+    const { error } = await supabase.from('scheduled_calls').insert(calls);
 
     if (error) {
       setMessage('Error: ' + error.message);
@@ -45,6 +51,18 @@ export default function ScheduleCallForm({ onScheduled }) {
       setReceiverId('');
       setDate('');
       setTime('');
+      setRepeatDays(1);
+      
+      // refetch updated receivers list
+      const { data: updatedReceivers, error: fetchError } = await supabase
+        .from('care_receivers')
+        .select('id, name')
+        .eq('user_id', user.id);
+
+      if (!fetchError) {
+        setReceivers(updatedReceivers || []);
+      }
+
       onScheduled?.(); // trigger refresh if needed
     }
   };
@@ -79,15 +97,30 @@ export default function ScheduleCallForm({ onScheduled }) {
         />
       </div>
 
-      <div>
-        <label className="block mb-1 font-medium">Time:</label>
-        <input
-          type="time"
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
-          required
-          className="w-full px-4 py-2 rounded-xl bg-gray-100 shadow-inner focus:outline-none"
-        />
+      <div className="flex gap-4">
+        <div className="w-1/2">
+          <label className="block mb-1 font-medium">Time:</label>
+          <input
+            type="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            required
+            className="w-full px-4 py-2 rounded-xl bg-gray-100 shadow-inner focus:outline-none"
+          />
+        </div>
+
+        <div className="w-1/2">
+          <label className="block mb-1 font-medium">Repeat for (days):</label>
+          <input
+            type="number"
+            min="1"
+            max="30"
+            value={repeatDays}
+            onChange={(e) => setRepeatDays(e.target.value)}
+            required
+            className="w-full px-4 py-2 rounded-xl bg-gray-100 shadow-inner focus:outline-none"
+          />
+        </div>
       </div>
 
       <div className='flex justify-center'>

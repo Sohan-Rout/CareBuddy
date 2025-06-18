@@ -1,82 +1,64 @@
 import React from 'react';
+import { FaMicrophoneAlt, FaSmileBeam, FaChartLine, FaBell, FaLock } from 'react-icons/fa';
 
 const featuresData = [
   {
-    icon: '🗣️',
+    icon: <FaMicrophoneAlt size={32} />,
     title: 'AI-Powered Voice Calls',
     description: 'CareBuddy makes regular voice calls to users, offering comforting conversations that feel human and supportive.',
   },
   {
-    icon: '😊',
+    icon: <FaSmileBeam size={32} />,
     title: 'Mood Check-In System',
     description: 'Daily or scheduled check-ins with personalized questions help track emotional wellness over time.',
   },
   {
-    icon: '📝',
+    icon: <FaChartLine size={32} />,
     title: 'Real-Time Sentiment Analysis',
     description: 'Using advanced AI, user responses are converted to text and analyzed to understand mood, stress, or loneliness levels.',
   },
   {
-    icon: '🚨',
+    icon: <FaBell size={32} />,
     title: 'Caregiver Alerts',
     description: 'If a user repeatedly expresses distress or statements like "I feel alone," CareBuddy instantly alerts a registered family member or caregiver via SMS or email.',
   },
   {
-    icon: '🔒',
+    icon: <FaLock size={32} />,
     title: 'Secure & Private',
     description: 'All conversations and user data are handled with full privacy and encrypted storage on secure servers.',
+  },
+  {
+    icon: <FaSmileBeam size={32} />,
+    title: 'Get Started Instantly',
+    description: 'Try a sample call and see how CareBuddy connects and responds in real time with warmth and empathy.',
   },
 ];
 
 const Features = () => {
   return (
-    <section className="relative px-4 sm:px-8 py-12 sm:py-16 max-w-6xl mx-auto overflow-hidden">
-      <svg
-        className="absolute -top-8 -left-8 z-0"
-        width="350"
-        height="350"
-        viewBox="0 0 350 350"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ pointerEvents: 'none' }}
-      >
-        <circle cx="80" cy="80" r="40" stroke="black" strokeWidth="3" fill="none" />
-        <circle cx="80" cy="80" r="70" stroke="black" strokeWidth="3" fill="none" />
-        <circle cx="80" cy="80" r="100" stroke="black" strokeWidth="3" fill="none" />
-        <circle cx="80" cy="80" r="130" stroke="black" strokeWidth="3" fill="none" />
-        <circle cx="80" cy="80" r="160" stroke="black" strokeWidth="3" fill="none" />
-      </svg>
-      <h2 className="text-center font-poppins font-bold text-2xl sm:text-3xl mb-2 text-black tracking-wide relative z-10">Features</h2>
-      <p className="text-center mb-8 sm:mb-10 text-black text-base sm:text-lg font-poppins tracking-wide relative z-10">These Features Are Just the Beginning.</p>
-      <div className="flex flex-col items-center relative z-10">
-        <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 mb-4">
-          {featuresData.slice(0, 3).map(({ icon, title, description }, index) => (
-            <div
-              key={index}
-              className="bg-[#eaff8b] rounded-2xl p-6 sm:p-8 w-full sm:w-[370px] shadow-[0_4px_24px_rgba(0,0,0,0.15)] text-center flex flex-col gap-3 border-[2.5px] border-[#222] font-poppins transition-transform duration-200 hover:scale-105"
-            >
-              <span className="text-4xl mb-2">{icon}</span>
-              <h3 className="font-bold text-lg sm:text-xl text-black mb-1 tracking-wide">{title}</h3>
-              <p className="text-[#a1b34c] text-sm sm:text-base font-normal leading-snug">{description}</p>
+    <section className="py-20 px-4 sm:px-8 max-w-6xl mx-auto">
+      <div className="text-center mb-16">
+        <h2 className="text-4xl font-semibold text-black mb-4">Why You’ll Love CareBuddy</h2>
+        <p className="text-md text-gray-600 max-w-xl mx-auto font-medium">
+          Everything you need to feel heard, cared for, and safe — in one adorable platform.
+        </p>
+      </div>
+      <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+        {featuresData.map(({ icon, title, description }, index) => (
+          <div
+            key={index}
+            className="bg-white border border-black/25 rounded-3xl shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition duration-200 ease-in-out"
+          >
+            <div className="text-secondary bg-primary p-4 rounded-full mb-4 shadow-sm">
+              {icon}
             </div>
-          ))}
-        </div>
-        <div className="flex flex-col sm:flex-row gap-6 sm:gap-12">
-          {featuresData.slice(3).map(({ icon, title, description }, index) => (
-            <div
-              key={index}
-              className="bg-[#eaff8b] rounded-2xl p-6 sm:p-8 w-full sm:w-[370px] shadow-[0_4px_24px_rgba(0,0,0,0.15)] text-center flex flex-col gap-3 border-[2.5px] border-[#222] font-poppins transition-transform duration-200 hover:scale-105"
-            >
-              <span className="text-4xl mb-2">{icon}</span>
-              <h3 className="font-bold text-lg sm:text-xl text-black mb-1 tracking-wide">{title}</h3>
-              <p className="text-[#a1b34c] text-sm sm:text-base font-normal leading-snug">{description}</p>
-            </div>
-          ))}
-        </div>
+            <h3 className="text-lg font-medium text-black mb-2">{title}</h3>
+            <p className="text-sm text-gray-600">{description}</p>
+          </div>
+        ))}
       </div>
     </section>
   );
 };
 
 export default Features;
-                                                                                                                                                                                      
