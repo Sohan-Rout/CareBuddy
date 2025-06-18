@@ -30,8 +30,7 @@ const featuresData = [
 
 const Features = () => {
   return (
-    <section className="relative px-8 py-16 max-w-full mx-auto overflow-hidden">
-      {/* 5 Black Concentric Circles SVG - Figma style, mostly outside top left */}
+    <section className="relative px-4 sm:px-8 py-12 sm:py-16 max-w-6xl mx-auto overflow-hidden">
       <svg
         className="absolute -top-8 -left-8 z-0"
         width="350"
@@ -47,30 +46,30 @@ const Features = () => {
         <circle cx="80" cy="80" r="130" stroke="black" strokeWidth="3" fill="none" />
         <circle cx="80" cy="80" r="160" stroke="black" strokeWidth="3" fill="none" />
       </svg>
-      <h2 className="text-center font-poppins font-bold text-3xl mb-2 text-black tracking-wide relative z-10">Features</h2>
-      <p className="text-center mb-10 text-black text-lg font-poppins tracking-wide relative z-10">These Features Are Just the Beginning.</p>
+      <h2 className="text-center font-poppins font-bold text-2xl sm:text-3xl mb-2 text-black tracking-wide relative z-10">Features</h2>
+      <p className="text-center mb-8 sm:mb-10 text-black text-base sm:text-lg font-poppins tracking-wide relative z-10">These Features Are Just the Beginning.</p>
       <div className="flex flex-col items-center relative z-10">
-        <div className="flex flex-row gap-12 mb-4">
+        <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 mb-4">
           {featuresData.slice(0, 3).map(({ icon, title, description }, index) => (
             <div
               key={index}
-              className="bg-[#eaff8b] rounded-2xl p-8 w-[370px] shadow-[0_4px_24px_rgba(0,0,0,0.15)] text-center flex flex-col gap-3 border-[2.5px] border-[#222] font-poppins transition-transform duration-200 hover:scale-105"
+              className="bg-[#eaff8b] rounded-2xl p-6 sm:p-8 w-full sm:w-[370px] shadow-[0_4px_24px_rgba(0,0,0,0.15)] text-center flex flex-col gap-3 border-[2.5px] border-[#222] font-poppins transition-transform duration-200 hover:scale-105"
             >
               <span className="text-4xl mb-2">{icon}</span>
-              <h3 className="font-bold text-xl text-black mb-1 tracking-wide">{title}</h3>
-              <p className="text-[#a1b34c] text-base font-normal leading-snug">{description}</p>
+              <h3 className="font-bold text-lg sm:text-xl text-black mb-1 tracking-wide">{title}</h3>
+              <p className="text-[#a1b34c] text-sm sm:text-base font-normal leading-snug">{description}</p>
             </div>
           ))}
         </div>
-        <div className="flex flex-row gap-12">
+        <div className="flex flex-col sm:flex-row gap-6 sm:gap-12">
           {featuresData.slice(3).map(({ icon, title, description }, index) => (
             <div
               key={index}
-              className="bg-[#eaff8b] rounded-2xl p-8 w-[370px] shadow-[0_4px_24px_rgba(0,0,0,0.15)] text-center flex flex-col gap-3 border-[2.5px] border-[#222] font-poppins transition-transform duration-200 hover:scale-105"
+              className="bg-[#eaff8b] rounded-2xl p-6 sm:p-8 w-full sm:w-[370px] shadow-[0_4px_24px_rgba(0,0,0,0.15)] text-center flex flex-col gap-3 border-[2.5px] border-[#222] font-poppins transition-transform duration-200 hover:scale-105"
             >
               <span className="text-4xl mb-2">{icon}</span>
-              <h3 className="font-bold text-xl text-black mb-1 tracking-wide">{title}</h3>
-              <p className="text-[#a1b34c] text-base font-normal leading-snug">{description}</p>
+              <h3 className="font-bold text-lg sm:text-xl text-black mb-1 tracking-wide">{title}</h3>
+              <p className="text-[#a1b34c] text-sm sm:text-base font-normal leading-snug">{description}</p>
             </div>
           ))}
         </div>
