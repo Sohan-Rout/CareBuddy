@@ -38,7 +38,7 @@ const Features = () => {
   return (
     <section className="py-20 px-4 sm:px-8 max-w-6xl mx-auto">
       <div className="text-center mb-16">
-        <h2 className="text-4xl font-semibold text-black mb-4">Why You’ll Love CareBuddy</h2>
+        <h2 className="text-4xl font-medium text-black mb-4">Why You’ll Love CareBuddy</h2>
         <p className="text-md text-gray-600 max-w-xl mx-auto font-medium">
           Everything you need to feel heard, cared for, and safe — in one adorable platform.
         </p>
