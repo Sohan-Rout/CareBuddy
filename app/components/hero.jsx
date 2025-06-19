@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { FaStar, FaUserFriends } from 'react-icons/fa';
 
 const Hero = () => {
@@ -14,16 +15,16 @@ const Hero = () => {
           Let your emotions speak — we’re here to listen, support, and help you feel better every day.
         </p>
         <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
-          <button className="bg-primary text-black px-6 py-3 rounded-full border border-black font-medium hover:opacity-90 transition">
+          <Link href='/auth' className="bg-primary text-black px-6 py-3 rounded-full border border-black font-medium hover:opacity-90 transition">
             Get Started
-          </button>
-          <button className="bg-white text-black px-6 py-3 rounded-full border border-black font-medium hover:opacity-90 transition">
+          </Link>
+          <Link href='/#features' className="bg-white text-black px-6 py-3 rounded-full border border-black font-medium hover:opacity-90 transition">
             See Features
-          </button>
+          </Link>
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 text-black font-medium pt-2">
           <div className="flex items-center gap-2">
-            <FaStar className="text-amber-400" />
+            <FaStar className="text-amber-500" />
             <p>Rated 4.5 stars</p>
           </div>
           <div className="flex items-center gap-2">
