@@ -26,7 +26,7 @@ export default function ScheduledCallList({ refresh }) {
           )
         `)
         .eq('user_id', user.id)
-        .order('scheduled_time', { ascending: true })
+        .order('scheduled_time', { ascending: false })
         .then(({ data }) => setCalls(data || []));
     }
   }, [user, refresh]);
