@@ -9,8 +9,7 @@ import {
   eachDayOfInterval,
   getDay,
   isToday,
-  isPast,
-  isFuture,
+  isSameDay, // Import isSameDay for comparing dates
   parseISO,
 } from 'date-fns';
 
@@ -22,6 +21,7 @@ export default function MoodCalendar() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date()); // New state for selected date
 
   useEffect(() => {
     const fetchMoods = async () => {
@@ -76,6 +76,11 @@ export default function MoodCalendar() {
     return moodsMap;
   }, [moodLogs]);
 
+  // Filter mood logs to show entries for the selected date
+  const logsForSelectedDate = useMemo(() => {
+    return moodLogs.filter(log => isSameDay(parseISO(log.created_at), selectedDate));
+  }, [moodLogs, selectedDate]); // Dependency on selectedDate
+
   // Generate calendar days for the current month
   const daysInMonth = useMemo(() => {
     const start = startOfMonth(currentMonth);
@@ -100,7 +105,7 @@ export default function MoodCalendar() {
   };
 
   const getDayClassNames = (day) => {
-    let classes = 'rounded-md h-10 w-full flex items-center justify-center text-xs font-medium';
+    let classes = 'rounded-md h-10 w-full flex items-center justify-center text-xs font-medium cursor-pointer'; // Added cursor-pointer
 
     if (!day) {
       return classes + ' bg-transparent';
@@ -111,6 +116,16 @@ export default function MoodCalendar() {
     const { color } = mood ? moodMap[mood] : moodMap.unknown;
 
     classes += ` ${color}`;
+
+    // Add styling for today's date
+    if (isToday(day)) {
+      classes += ' border-2 border-blue-500'; // Highlight today
+    }
+
+    // Add styling for the selected date
+    if (isSameDay(day, selectedDate)) {
+      classes += ' ring-2 ring-offset-2 ring-blue-700'; // Highlight selected date
+    }
 
     return classes;
   };
@@ -127,12 +142,18 @@ export default function MoodCalendar() {
   return (
     <div className="flex flex-col lg:flex-row gap-6 max-w-6xl mx-auto p-0">
       <div className="w-full lg:w-2/3 bg-white rounded-lg shadow-xl p-6">
-        <h3 className="text-xl text-center font-medium mb-4 text-black">Daily Mood Logs</h3>
+        <h3 className="text-xl text-center font-medium mb-4 text-black">
+          Mood Logs for {format(selectedDate, 'PPP')} {/* Display selected date */}
+        </h3>
         <div className="space-y-2">
-          {moodLogs.length === 0 ? (
-            <p className="text-gray-500">No mood entries available.</p>
+          {logsForSelectedDate.length === 0 ? ( // Check logsForSelectedDate
+            <p className="text-gray-500 text-center">No mood logs available for this date 
+            <br/>
+            or 
+            <br/>
+            Initiate the calls to begin</p>
           ) : (
-            moodLogs.map((log, idx) => (
+            logsForSelectedDate.map((log, idx) => ( // Map logsForSelectedDate
               <div key={idx} className="p-4 bg-white border border-transparent border-b-black/25">
                 <p className="text-sm text-gray-700">
                   <span className='font-semibold'>Receiver:</span> {log.care_receivers?.name || 'Unknown'}
@@ -150,7 +171,7 @@ export default function MoodCalendar() {
       </div>
 
       <div className="w-full lg:w-1/3 bg-white rounded-lg shadow-xl p-6">
-        <h3 className="text-xl text-center font-medium mb-4 text-black">Mood Calender</h3>
+        <h3 className="text-xl text-center font-medium mb-4 text-black">Mood Calendar</h3>
         <div className="flex justify-between bg-primary border border-black rounded-xl items-center mb-4">
           <button
             onClick={() => setCurrentMonth(prev => startOfMonth(new Date(prev.getFullYear(), prev.getMonth() - 1, 1)))}
@@ -178,7 +199,11 @@ export default function MoodCalendar() {
         <div className="grid grid-cols-7 gap-1">
           {daysInMonth.map((day, index) => {
             return (
-              <div key={index} className={getDayClassNames(day)}>
+              <div
+                key={index}
+                className={getDayClassNames(day)}
+                onClick={() => day && setSelectedDate(day)} // Set selected date on click
+              >
                 {day ? format(day, 'd') : ''}
               </div>
             );
