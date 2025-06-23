@@ -13,9 +13,11 @@
 ## 🎧 Listen to a Demo Call
 
 <audio controls>
-  <source src="./public/demoImg/record-1750670738995.mp3" type="audio/mpeg">
+  <source src="https://github.com/your-username/CareBuddy/raw/main/public/demoImg/record-1750670738995.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
+
+> 🎵 If the audio player doesn't load in your browser, [click here to listen on Google Drive](https://drive.google.com/file/d/1NQE8AvFKqU-aTzNcQOWmZROANqTSSl6X/view?usp=share_link).
 
 ---
 

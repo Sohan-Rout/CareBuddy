@@ -18,9 +18,14 @@ const Hero = () => {
           <Link href='/auth' className="bg-primary text-black px-6 py-3 rounded-full border border-black font-medium hover:opacity-90 transition">
             Get Started
           </Link>
-          <Link href='/#features' className="bg-white text-black px-6 py-3 rounded-full border border-black font-medium hover:opacity-90 transition">
-            See Features
-          </Link>
+          <a
+            href="./demoImg/record-1750670738995.mp3"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-white text-black px-6 py-3 rounded-full border border-black font-medium hover:opacity-90 transition"
+          >
+            Hear Demo Call
+          </a>
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 text-black font-medium pt-2">
           <div className="flex items-center gap-2">
