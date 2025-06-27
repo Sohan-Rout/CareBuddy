@@ -9,6 +9,8 @@ import ScheduleCallForm from '@/app/dashboard/components/ScheduleCallForm';
 import ScheduledCallList from '@/app/dashboard/components/ScheduledCallList';
 import MoodCalendar from '@/app/dashboard/components/MoodCalendar';
 import CareReceiverTipsDisplay from '@/app/dashboard/components/CareReceiverTipsDisplay';
+import CaregiverPhoneSettings from '@/app/dashboard/components/CaregiverPhoneSettings';
+import AlertHistory from '@/app/dashboard/components/AlertHistory';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -46,11 +48,19 @@ export default function Dashboard() {
           <ScheduledCallList refresh={refresh} />
         </div>
 
-        <div className="md:col-span-3 order-5">
+        <div className="order-5">
+      <CaregiverPhoneSettings />
+    </div>
+
+    <div className="md:col-span-2 order-6">
+      <AlertHistory />
+    </div>
+
+        <div className="md:col-span-3 order-7">
           <MoodCalendar />
         </div>
 
-        <div className='order-6 md:col-span-3'>
+        <div className='order-8 md:col-span-3'>
           <CareReceiverTipsDisplay />
         </div>
       </div>
