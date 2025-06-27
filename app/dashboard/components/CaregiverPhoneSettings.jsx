@@ -7,8 +7,7 @@ export default function CaregiverPhoneSettings() {
   const { user } = useAuth();
   const [currentPhone, setCurrentPhone] = useState('');
   const [newPhone, setNewPhone] = useState('');
-  const [countryCode, setCountryCode] = useState('+91');
-  const [isPhoneVerified, setIsPhoneVerified] = useState(false);
+  const [countryCode, setCountryCode] = useState('+91'); // Default country code
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [isUpdatingPhone, setIsUpdatingPhone] = useState(false);
@@ -23,41 +22,45 @@ export default function CaregiverPhoneSettings() {
       setLoading(true);
       setMessage('');
       try {
+        // Fetch from user_profiles table where id matches auth.users.id
         const { data, error } = await supabase
-          .from('caregiver_contacts')
-          .select('id, caregiver_phone')
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false })
-          .limit(1)
+          .from('user_profiles')
+          .select('caregiver_phone') // Only select the phone number
+          .eq('id', user.id) // Use 'id' as it's the primary key and linked to auth.users.id
           .single();
 
+        // PGRST116 means "no rows found", which is expected for a new user without a profile yet
         if (error && error.code !== 'PGRST116') {
           throw error;
         }
 
-        if (data) {
-          setCurrentPhone(data.caregiver_phone || '');
+        if (data && data.caregiver_phone) {
+          setCurrentPhone(data.caregiver_phone);
+          // Attempt to parse country code and number from the stored phone
           if (data.caregiver_phone.startsWith('+')) {
-            const matched = data.caregiver_phone.match(/^(\+\d{1,3})(.*)$/);
+            const matched = data.caregiver_phone.match(/^(\+\d{1,4})(.*)$/); // Matches + followed by 1-4 digits
             if (matched) {
               setCountryCode(matched[1]);
               setNewPhone(matched[2]);
             } else {
+              // Fallback if parsing fails (e.g., unexpected format), assume default country code
               setCountryCode('+91');
               setNewPhone(data.caregiver_phone);
             }
           } else {
+            // If no '+' prefix, assume default country code and full number
             setCountryCode('+91');
-            setNewPhone(data.caregiver_phone || '');
+            setNewPhone(data.caregiver_phone);
           }
         } else {
+          // No existing phone number found
           setCurrentPhone('');
           setNewPhone('');
-          setCountryCode('+91');
+          setCountryCode('+91'); // Default for new users
         }
       } catch (err) {
         console.error('Error fetching caregiver phone:', err);
-        setMessage('Failed to load caregiver phone. ' + (err?.message || JSON.stringify(err)));
+        setMessage('Failed to load caregiver phone. ' + (err?.message || 'An unknown error occurred.'));
       } finally {
         setLoading(false);
       }
@@ -66,7 +69,7 @@ export default function CaregiverPhoneSettings() {
     fetchPhoneSettings();
   }, [user]);
 
-  // 2. Handle insert into caregiver_contacts and log SMS alert
+  // 2. Handle upsert into user_profiles
   const handleUpdatePhone = async (e) => {
     e.preventDefault();
     setMessage('');
@@ -81,40 +84,26 @@ export default function CaregiverPhoneSettings() {
 
     setIsUpdatingPhone(true);
     try {
-      // Insert new caregiver phone contact
-      const { data: insertData, error: insertError } = await supabase
-        .from('caregiver_contacts')
-        .insert({
-          user_id: user.id,
-          caregiver_phone: countryCode + newPhone,
-        })
-        .select('id')
-        .single();
+      const fullPhoneNumber = countryCode + newPhone;
 
-      if (insertError) {
-        throw insertError;
+      // Use upsert to either insert a new profile or update an existing one
+      const { error: upsertError } = await supabase
+        .from('user_profiles')
+        .upsert({
+          id: user.id, // This links directly to auth.users.id
+          caregiver_phone: fullPhoneNumber,
+        }, { onConflict: 'id' }); // Specify 'id' as the conflict target for upsert
+
+      if (upsertError) {
+        throw upsertError;
       }
 
-      setCurrentPhone(countryCode + newPhone);
-      setMessage('Phone number registered. Alerts will be sent to this number.');
+      setCurrentPhone(fullPhoneNumber);
+      setMessage('Phone number updated successfully. Alerts will be sent to this number.');
 
-      // Log the SMS alert registration in caregiver_sms_logs
-      const logMessage = 'Phone number registered. Alerts will be sent to this number.';
-      const { error: logError } = await supabase
-        .from('caregiver_sms_logs')
-        .insert({
-          user_id: user.id,
-          caregiver_contact_id: insertData.id,
-          message: logMessage,
-          status: 'pending',
-        });
-
-      if (logError) {
-        console.error('Error logging SMS alert:', logError.message);
-      }
     } catch (err) {
-      console.error('Error inserting caregiver phone:', err);
-      setMessage('Failed to register caregiver phone: ' + (err?.message || JSON.stringify(err)));
+      console.error('Error updating caregiver phone:', err);
+      setMessage('Failed to update caregiver phone: ' + (err?.message || 'An unknown error occurred.'));
     } finally {
       setIsUpdatingPhone(false);
     }
@@ -154,6 +143,7 @@ export default function CaregiverPhoneSettings() {
                 <option value="+61">+61</option>
                 <option value="+81">+81</option>
                 <option value="+49">+49</option>
+                {/* Add more country codes as needed */}
               </select>
               <input
                 type="text"
