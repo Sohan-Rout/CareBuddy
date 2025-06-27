@@ -11,6 +11,7 @@ import MoodCalendar from '@/app/dashboard/components/MoodCalendar';
 import CareReceiverTipsDisplay from '@/app/dashboard/components/CareReceiverTipsDisplay';
 import CaregiverPhoneSettings from '@/app/dashboard/components/CaregiverPhoneSettings';
 import AlertHistory from '@/app/dashboard/components/AlertHistory';
+import MoodBarChart from '@/app/dashboard/components/MoodBarChart';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -53,7 +54,7 @@ export default function Dashboard() {
     </div>
 
     <div className="md:col-span-2 order-6">
-      <AlertHistory />
+      <MoodBarChart />
     </div>
 
         <div className="md:col-span-3 order-7">

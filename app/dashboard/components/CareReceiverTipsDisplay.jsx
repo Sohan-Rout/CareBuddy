@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabaseClient'; // Adjust path if necessary
 import { useAuth } from '@/context/AuthContext'; // Adjust path if necessary
 import { format, parseISO } from 'date-fns'; // For date formatting
 import { FaLightbulb, FaCheckCircle } from 'react-icons/fa'; // Added FaCheckCircle for the button icon
+import toast from 'react-hot-toast';
 
 export default function CareReceiverTipsDisplay() {
   const { user } = useAuth();
@@ -89,6 +90,7 @@ export default function CareReceiverTipsDisplay() {
       // Optimistically update the UI: remove the tip from the local state
       setTips(prevTips => prevTips.filter(tip => tip.id !== tipId));
       console.log(`Tip ${tipId} marked as done and deleted.`);
+      toast.success('Tip marked as done and removed.');
 
     } catch (err) {
       console.error('Error marking tip as done:', err.message);

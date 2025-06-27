@@ -11,6 +11,7 @@ export default function CaregiverPhoneSettings() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [isUpdatingPhone, setIsUpdatingPhone] = useState(false);
+  const [agreed, setAgreed] = useState(false);
 
   // 1. Fetch the current phone number on load
   useEffect(() => {
@@ -119,7 +120,7 @@ export default function CaregiverPhoneSettings() {
   }
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-xl mt-8 mb-6">
+    <div className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-xl mt-2 mb-6">
       <h2 className="text-xl text-center font-medium mb-4 text-gray-800">Your Phone Settings</h2>
 
       {loading && <p className="text-center text-gray-600">Loading phone settings...</p>}
@@ -127,9 +128,13 @@ export default function CaregiverPhoneSettings() {
 
       {!loading && (
         <form onSubmit={handleUpdatePhone} className="space-y-4">
+          <div className="flex flex-col items-center space-x-2">
+            <span className="text-gray-700">Current Registered Phone:</span>
+            <span className="font-medium text-blue-500 underline underline-offset-2 text-center">{currentPhone || 'Not set'}</span>
+          </div>
           <div>
-            <label htmlFor="newPhone" className="block text-sm font-medium text-gray-700">
-              Your Phone Number
+            <label htmlFor="newPhone" className="block text-lg font-medium text-black">
+              Your Phone Number:
             </label>
             <div className="mt-1 flex rounded-lg shadow-sm">
               <select
@@ -150,7 +155,7 @@ export default function CaregiverPhoneSettings() {
                 id="newPhone"
                 value={newPhone}
                 onChange={(e) => setNewPhone(e.target.value)}
-                className="flex-1 min-w-0 block w-full px-3 py-2 border border-gray-300 rounded-r-md focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                className="flex-1 min-w-0 block w-full px-3 py-2 border bg-gray-100 placeholder-gray-400 rounded-r-md focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
                 placeholder="9876543210"
                 required
               />
@@ -158,19 +163,30 @@ export default function CaregiverPhoneSettings() {
             <p className="text-xs text-gray-500 mt-1">Please enter your phone number without country code; it will be added automatically.</p>
           </div>
 
-          <div className="flex items-center space-x-2">
-            <span className="text-gray-700">Current Registered Phone:</span>
-            <span className="font-medium">{currentPhone || 'Not set'}</span>
+          <div className="flex flex-col items-center space-x-2">
+            <span className="text-gray-700">SMS Delivery:</span>
+            <span className="font-medium text-center text-black">Will send alerts to this number</span>
           </div>
 
           <div className="flex items-center space-x-2">
-            <span className="text-gray-700">SMS Delivery:</span>
-            <span className="font-semibold text-blue-600">Will send alerts to this number</span>
+            <input
+              type="checkbox"
+              id="agree"
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+              className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
+              required
+            />
+            <label htmlFor="agree" className="text-sm text-gray-700">
+              I agree to the{' '}
+              <a href="/terms" target="_blank" className="text-blue-600 underline">Terms and Conditions</a> and{' '}
+              <a href="/privacy" target="_blank" className="text-blue-600 underline">Privacy Policy</a>.
+            </label>
           </div>
 
           <button
             type="submit"
-            disabled={isUpdatingPhone}
+            disabled={isUpdatingPhone || !agreed}
             className="w-full inline-flex items-center justify-center px-4 py-2 border border-black text-base font-medium rounded-lg shadow-sm text-black bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isUpdatingPhone ? 'Updating...' : 'Update Phone Number'}
