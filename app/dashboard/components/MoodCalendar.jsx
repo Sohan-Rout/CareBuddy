@@ -9,7 +9,7 @@ import {
   eachDayOfInterval,
   getDay,
   isToday,
-  isSameDay, // Import isSameDay for comparing dates
+  isSameDay,
   parseISO,
 } from 'date-fns';
 
@@ -21,7 +21,7 @@ export default function MoodCalendar() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(new Date()); // New state for selected date
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   useEffect(() => {
     const fetchMoods = async () => {
@@ -66,7 +66,6 @@ export default function MoodCalendar() {
     };
   }, [user]);
 
-  // Memoize the processed mood data for calendar display
   const moodsByDate = useMemo(() => {
     const moodsMap = new Map();
     moodLogs.forEach(log => {
@@ -79,7 +78,7 @@ export default function MoodCalendar() {
   // Filter mood logs to show entries for the selected date
   const logsForSelectedDate = useMemo(() => {
     return moodLogs.filter(log => isSameDay(parseISO(log.created_at), selectedDate));
-  }, [moodLogs, selectedDate]); // Dependency on selectedDate
+  }, [moodLogs, selectedDate]);
 
   // Generate calendar days for the current month
   const daysInMonth = useMemo(() => {
@@ -87,16 +86,14 @@ export default function MoodCalendar() {
     const end = endOfMonth(currentMonth);
     const days = eachDayOfInterval({ start, end });
 
-    // Add leading empty days for calendar alignment
-    const firstDayIndex = getDay(start); // 0 for Sunday, 1 for Monday, etc.
+    const firstDayIndex = getDay(start); 
     for (let i = 0; i < firstDayIndex; i++) {
-      days.unshift(null); // Add null placeholders for days before the 1st
+      days.unshift(null); 
     }
 
     return days;
   }, [currentMonth]);
 
-  // Mood emoji and color mapping
   const moodMap = {
     positive: { emoji: '😊', color: 'bg-green-200 text-green-800' },
     neutral: { emoji: '😐', color: 'bg-yellow-200 text-yellow-800' },
@@ -202,7 +199,7 @@ export default function MoodCalendar() {
               <div
                 key={index}
                 className={getDayClassNames(day)}
-                onClick={() => day && setSelectedDate(day)} // Set selected date on click
+                onClick={() => day && setSelectedDate(day)}
               >
                 {day ? format(day, 'd') : ''}
               </div>
